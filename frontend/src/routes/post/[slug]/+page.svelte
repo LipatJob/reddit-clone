@@ -24,7 +24,7 @@
 	const author = post.author.username;
 
 	export let comment = "";
-	const submitComment = async(event)=>{
+	const submitComment = async()=>{
 		const res = await fetch("http://localhost:3000/post/1/comment?authorId=1", {
 			method: "POST",
 			headers: {
@@ -63,7 +63,7 @@
 				>
 					<div class="flex flex-col items-center space-y-[4px]">
 						<UpArrow/>
-						{post.numOfUpvotes}
+						{numOfUpvotes}
 						<DownArrow/>
 					</div>
 				</div>
