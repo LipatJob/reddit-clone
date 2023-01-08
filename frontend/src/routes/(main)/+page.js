@@ -1,6 +1,9 @@
-export const load = async () => {
+// @ts-nocheck
+export const load = async ({url}) => {
 	const getPosts = async () => {
-		const res = await fetch('http://localhost:3000/post', {
+		const sortBy = url.searchParams.get('sortBy') || "new";
+		console.log(`http://localhost:3000/post?sortBy=${sortBy}`)
+		const res = await fetch(`http://localhost:3000/post?sortBy=${sortBy}`, {
 			method: 'GET',
 		});
 		const data = await res.json();

@@ -6,12 +6,24 @@ const router = express.Router();
 
 // Posts
 router.get("/post", async (req, res) => {
-  const { sortBy } = req.query;
+  const sortBy = req.query.sortBy;
   const sortOption =
     {
       new: { orderBy: { dateCreated: "desc" } },
-      best: { orderBy: { dateCreated: "desc" } },
-      controversial: { orderBy: { dateCreated: "desc" } },
+      best: {
+        orderBy: {
+          upvotes: {
+            _count: "desc",
+          },
+        },
+      },
+      controversial: {
+        orderBy: {
+          comments: {
+            _count: "desc",
+          },
+        },
+      },
     }[sortBy] || {};
 
   const posts = await prisma.post.findMany({

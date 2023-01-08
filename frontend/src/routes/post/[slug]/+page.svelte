@@ -25,7 +25,7 @@
 
 	export let comment = "";
 	const submitComment = async()=>{
-		const res = await fetch("http://localhost:3000/post/1/comment?authorId=1", {
+		const res = await fetch(`http://localhost:3000/post/${post.id}/comment?authorId=1`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",

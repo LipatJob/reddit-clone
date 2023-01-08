@@ -1,5 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
+
 export const load = async ({params}) => {
 	const postId = params.slug;
 	console.log(`http://localhost:3000/post/${postId}`)

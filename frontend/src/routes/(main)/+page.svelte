@@ -10,18 +10,18 @@
 <div class="flex flex-col space-y-[16px] mt-[42px]">
 	<div class="bg-white border-[1px] p-4 border-[#A0A0A0] rounded-lg">
 		<div class="flex space-x-[55px]">
-			<div class="flex items-center space-x-[8px]">
+			<a class="flex items-center space-x-[8px]" href="/?sortBy=new">
 				<SortNewIcon/>
 				<p class="font-bold text-[24px] tracking-[-0.08em]">Whats new?</p>
-			</div>
-			<div class="flex items-center space-x-[8px]">
+			</a>
+			<a class="flex items-center space-x-[8px]" href="/?sortBy=best">
 				<SortBestIcon/>
 				<p class="font-bold text-[24px] tracking-[-0.08em]">Best</p>
-			</div>
-			<div class="flex items-center space-x-[8px]">
+			</a>
+			<a class="flex items-center space-x-[8px]" href="/?sortBy=controversial">
 				<SortControversialIcon/>
 				<p class="font-bold text-[24px] tracking-[-0.08em]">Controversial</p>
-			</div>
+			</a>
 		</div>
 	</div>
 	{#each data["posts"] as post}
