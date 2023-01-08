@@ -1,0 +1,58 @@
+POST http://localhost:3000/user
+Content-Type: application/json
+
+{
+    "email": "lipatjobj@gmail.com",
+    "username": "joblipat",
+    "password": "asdfgh"
+}
+
+###
+
+GET http://localhost:3000/user/1
+
+###
+
+POST http://localhost:3000/auth/token
+Content-Type: application/json
+
+{
+    "username": "joblipat",
+    "password": "asdfgh"
+}
+
+
+### 
+
+POST http://localhost:3000/post
+Content-Type: application/json
+
+{
+  "title": "Sample text",
+  "content": "Hello world" ,
+  "dateCreated": "2020-10-10",
+  "authorId": 1
+}
+
+###
+GET http://localhost:3000/post
+
+###
+GET http://localhost:3000/post/1
+
+###
+GET http://localhost:3000/user
+
+### 
+POST http://localhost:3000/post/1/upvote?userId=1
+
+###
+DELETE  http://localhost:3000/post/1/upvote?userId=1
+
+###
+POST http://localhost:3000/post/1/comment?authorId=1
+Content-Type: application/json
+
+{
+    "content": "Hello World 2"
+}
