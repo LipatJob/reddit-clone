@@ -1,4 +1,6 @@
 <script>
+// @ts-nocheck
+
   import DownvoteIconSmall from '../../../components/post/DownvoteIconSmall.svelte';
   import UpvoteIconSmall from '../../../components/post/UpvoteIconSmall.svelte';
   import CommentIcon from '../../../components/common/CommentIcon.svelte';
@@ -13,13 +15,31 @@
 	export let data;
 
 	const post = data["post"]
-	export let title = post.title;
-	export let body = post.content;
-	export let numOfComments = post._count.comments;
-	export let numOfUpvotes = post._count.upvotes;
-	export let comments = post.comments;
-	export let dateCreated = post.dateCreated;
-	export let author = post.author.username;
+	const title = post.title;
+	const body = post.content;
+	const numOfComments = post._count.comments;
+	const numOfUpvotes = post._count.upvotes;
+	const comments = post.comments;
+	const dateCreated = post.dateCreated;
+	const author = post.author.username;
+
+	export let comment = "";
+	const submitComment = async(event)=>{
+		const res = await fetch("http://localhost:3000/post/1/comment?authorId=1", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+    			"content": comment
+			})
+		});
+		if(res.ok){
+			location.reload()
+		} else {
+			alert("Cannot submit comment")
+		}
+	}
 
 </script>
 
@@ -43,7 +63,7 @@
 				>
 					<div class="flex flex-col items-center space-y-[4px]">
 						<UpArrow/>
-						{numOfUpvotes}
+						{post.numOfUpvotes}
 						<DownArrow/>
 					</div>
 				</div>
@@ -73,22 +93,25 @@
 
 			<div class="bg-white px-[45px] min-h-full flex flex-col space-y-[32px] py-8">
 				<div class="flex space-y-[20px] flex-col">
-					<div>
-						<textarea
-							class="p-2 rounded-xl w-full border-[#DEDEDE] border-[1px]"
-							placeholder="Text (optional)"
-							rows="4"
-						/>
-					</div>
-					<div class="flex">
-						<div class="ml-auto right-0">
-							<div
-								class="bg-[#D9D9D9] px-9 py-1 rounded-full text-[20px] font-bold tracking-tighter"
-							>
-								Comment
+					<form on:submit|preventDefault={submitComment}>
+							<textarea
+								bind:value={comment}
+								class="p-2 rounded-xl w-full border-[#DEDEDE] border-[1px]"
+								placeholder="Text (optional)"
+								rows="4"
+								name="comment"
+								id="comment"
+							/>
+						<button class="flex" type="submit">
+							<div class="ml-auto right-0">
+								<div
+									class="bg-[#D9D9D9] px-9 py-1 rounded-full text-[20px] font-bold tracking-tighter"
+								>
+									Comment
+								</div>
 							</div>
-						</div>
-					</div>
+						</button>
+					</form>
 					<div class="w-full h-[2px] bg-black" />
 				</div>
 				{#each comments as comment}
