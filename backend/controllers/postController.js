@@ -53,22 +53,18 @@ router.get("/post/:id", async (req, res) => {
 });
 
 router.post("/post", async (req, res) => {
+  const authorId = parseInt(req.query.authorId); // TODO: Get this from token
+  const { title, content } = req.body;
   const post = await prisma.post.create({
-    data: parsePostFromBody(req.body),
+    data: {
+      title,
+      content,
+      authorId: parseInt(authorId),
+      dateCreated: new Date(),
+    },
   });
   res.json(post);
 });
-
-function parsePostFromBody(body) {
-  const { title, content, authorId, dateCreated } = body;
-
-  return {
-    title,
-    content,
-    authorId: parseInt(authorId),
-    dateCreated: new Date(dateCreated),
-  };
-}
 
 router.delete("/post/:id", async (req, res) => {
   const { id } = req.params;
@@ -100,8 +96,8 @@ router.get("/post/:id/comment", async (req, res) => {
 
 router.post("/post/:id/comment", async (req, res) => {
   const postId = req.params.id;
+  const authorId = parseInt(req.query.authorId); // TODO: Get this from token
   const { content } = req.body;
-  const authorId = parseInt(req.query.authorId);
   const post = await prisma.comment.create({
     data: {
       content,
@@ -116,7 +112,7 @@ router.post("/post/:id/comment", async (req, res) => {
 //Upvotes
 router.post("/post/:id/upvote", async (req, res) => {
   const postId = parseInt(req.params.id);
-  const userId = parseInt(req.query.userId);
+  const userId = parseInt(req.query.userId); // TODO: Get this from token
 
   const upvoteExists = await prisma.upvote.findFirst({
     where: {
@@ -140,7 +136,7 @@ router.post("/post/:id/upvote", async (req, res) => {
 
 router.delete("/post/:id/upvote", async (req, res) => {
   const postId = parseInt(req.params.id);
-  const userId = parseInt(req.query.userId);
+  const userId = parseInt(req.query.userId); // // TODO: Get this from token
 
   const upvoteExists = await prisma.upvote.findFirst({
     where: {
