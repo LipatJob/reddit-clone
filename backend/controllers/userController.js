@@ -1,6 +1,7 @@
 import express from "express";
 import prisma from "../lib/prisma.js";
 import { ensureValidAuthToken } from "../middlewares/authenticationMiddleware.js";
+import userRepository from "../repositories/userRepository.js";
 
 const router = express.Router();
 
@@ -18,30 +19,30 @@ router.post("/user", async (req, res) => {
     username: req.body.username,
     password: req.body.password,
   };
-  const createdUser = await prisma.user.create({
-    data: userInformation,
-  });
 
-  const userDto = toUserDto(createdUser);
+  const user = await userRepository.createUser(userInformation);
+  const userDto = toUserDto(user);
+
   return res.json(userDto);
 });
 
 router.get("/user", async (req, res) => {
-  const users = await prisma.user.findMany();
-  return res.json(users.map(toUserDto));
+  const users = await userRepository.getUsers();
+  const userDtos = users.map(toUserDto);
+
+  return res.json(userDtos);
 });
 
 router.get("/user/:id", async (req, res) => {
   const id = parseInt(req.params.id);
-  if(id == null) {return req.sendStatus(501)}
-  
+  if (id == null) {
+    return req.sendStatus(501);
+  }
 
-  const user = await prisma.user.findFirst({
-    where: {
-      id: id,
-    },
-  });
-  return res.json(toUserDto(user));
+  const user = await userRepository.getUser(id);
+  const userDto = toUserDto(user);
+
+  return res.json(userDto);
 });
 
 router.delete("/user/:id", ensureValidAuthToken, async (req, res) => {
@@ -51,8 +52,10 @@ router.delete("/user/:id", ensureValidAuthToken, async (req, res) => {
     return res.sendStatus(403);
   }
 
-  const user = await prisma.user.delete({ where: { id } });
-  return res.json(user);
+  const user = await userRepository.deleteUser(id);
+  const userDto = toUserDto(user);
+
+  return res.json(userDto);
 });
 
 export default router;
